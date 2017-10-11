@@ -1,0 +1,85 @@
+server:
+  rootPath: /api/*
+  applicationConnectors:
+    - type: http
+      port: 7100
+  adminConnectors:
+    - type: http
+      port: 7101
+
+# logging configuration
+logging:
+    level: INFO
+    appenders:
+      - type: file
+        currentLogFilename: /var/log/apiserver/apiserver.log
+        archivedLogFilenamePattern: /var/log/apiserver/apiserver-%d.log.gz
+        archive: true
+        archivedFileCount: 5
+        timeZone: UTC
+        threshold: INFO
+        logFormat: "%-5p [%d{ISO8601, UTC}] %c %t: %m%n%xEx"
+        # maxFileSize: 10MB
+      - type: console
+        timeZone: UTC
+        target: stdout
+
+shiro:
+  #iniConfigs: ["classpath:org/secnod/shiro/test/integration/webapp/WEB-INF/shiro.ini"]
+  iniConfigs: ["classpath:shiro.ini"]
+
+# PLEASE DON'T TOUCH THIS UNLESS NEEDED
+# mongodb configuration
+mongoConfig:
+    host: localhost
+    port: 27017
+    dbName: apiserver
+
+mgmtServersConfig:
+    apiCertificate: conf/api.p12
+    apiCertificatePassword: password
+    apiBasicAuthUsername: admin
+    apiBasicAuthPassword: password
+    mgmtServerConfigs:
+        - name: "devmgmt"
+          # host: localhost
+          host: mgmt.dev.droidcloud.mobi
+          port: 443
+          domainName: Apiserver
+          cloudConfigName: ApiServer
+          # aggregateName: compute
+          aggregateName: agg-some-compute
+          ldapConfigName: Main LDAP
+          # baseVDImage: "virtual-device-3.4-user-daily-304000008.tgz"
+          baseVDImage: "some-image.tgz"
+          # flavor: "def1"
+          flavor: "some-flavor"
+          zipCode: 10001
+          capacity: 10
+
+generalConfig:
+    runBackgroundTasks: true
+    imageCreationTimeoutSeconds: 900
+    numMsgThreadPoolSize: 5
+    zipLatLongFile: conf/us_zip_lat_long.csv
+    useGrecaptcha: true
+    grecaptchaKey: "somegreptchakey"
+    grecaptchaServer: "https://www.google.com/recaptcha/api/siteverify"
+
+prospectsAppConfig:
+    enableProspectsApp: true
+    apiUrlPrefix: https://some.prospectsApp.com/api
+    apiUserEmail: someuser@appcompany.com
+    apiPassword: "somepwd"
+    apiUserKey: "someapiuserkey"
+    inviteListId: 1
+    landingPageListId: 2
+    outOfCapacityListId: 3
+    vPhoneConfirmedListId: 4
+    pickAppsListId: 5
+
+templateConfig:
+    templates:
+        "Microsoft Office Suite": newtemplate
+        "Google Suite": newtemplate
+        "All": newtemplate

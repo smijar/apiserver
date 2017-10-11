@@ -1,0 +1,16 @@
+[Unit]
+Description=REST Api Server
+After=syslog.target network.target
+
+[Service]
+Type=simple
+Restart=always
+ExecStartPre=/bin/mkdir -p /opt/apiserver
+ExecStart=/bin/bash -c ./start.sh
+RestartSec=6
+TimeoutStartSec=0
+TimeoutStopSec=5
+WorkingDirectory=/opt/apiserver/app
+
+[Install]
+WantedBy=multi-user.target
